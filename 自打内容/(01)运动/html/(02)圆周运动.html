@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		*{margin:0;padding:0;border-radius: 50%;}
+		ul>li{position: absolute;list-style: none;}
+		ul li:nth-child(1){width: 100px;height:100px;background:tomato;box-shadow: 0 0 0 178px #fff,0 0 0 180px red;}
+		ul li:nth-child(2){width: 30px;height:30px;background: #58bc58;box-shadow: 0 0 0 48px #fff,0 0 0 50px #58bc58;}
+		ul li:nth-child(3){width: 10px;height:10px;background: #ccc;}
+	</style>
+</head>
+<body>
+	<ul id="solarSystem">
+		<li class="sun"></li>
+		<li class="earth"></li>
+		<li class="moon"></li>
+	</ul>
+	<script>
+		var sun = document.querySelectorAll(".sun")[0];
+		var earth = document.querySelectorAll(".earth")[0];
+		var moon = document.querySelectorAll(".moon")[0];
+		var sun_r = 230;//地球绕太阳轨道半径
+		var earth_r = 65;//月亮绕地球轨道半径
+		console.log(earth.offsetWidth)
+		//圆心位置
+		var centerX = window.innerWidth/2;
+		var centerY = window.innerHeight/2;
+		//太阳位置
+		sun.style.left = (window.innerWidth - sun.offsetWidth)/2 + "px";
+		sun.style.top = (window.innerHeight - sun.offsetHeight)/2 + "px";
+		//地球初始位置
+		var deg = 0;
+		rad = torad(deg);
+		earthLocation(rad);
+		//1.初始化速度变量
+		var speed = 1;
+		//2.开启定时器
+		var timer = setInterval(function(){
+			//2.1获取当前值
+			deg += speed;
+			rad = torad(deg);
+			earthLocation(rad);
+		},10)
+		//deg转rad
+		function torad(deg){
+			return deg*Math.PI/180
+		}
+		//地球位置
+		function earthLocation(rad){
+			var x = sun_r*Math.sin(rad);
+			var y = sun_r*Math.cos(rad);
+			earth.style.left = centerX  -earth.offsetWidth/2 + x+"px";
+			earth.style.top =  centerY - earth.offsetHeight/2 - y +"px";
+		}	
+	</script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>s水平滚动轮播图</title>
+    <style>
+    	/*li不能设置inline-block,有缝隙*/
+    	li{list-style: none;float: left;}
+    	*{margin:0;padding:0;}
+    	
+    	.focus{margin-left: 100px;
+    		height: 320px;
+    		overflow: hidden;
+    		position: relative;}
+    	.focus ul:nth-child(1){
+    		position:absolute;
+    	}
+    	.jian li{
+    		width: 0;
+			height: 0;
+		    border-style:solid;
+		    opacity: 0.5;
+		    position:absolute;
+    	}
+		.jian li:nth-child(1){
+			border-width:30px 30px 30px 0;
+		    border-color:transparent #58bc58 transparent transparent;
+		    margin:40px auto;
+		    top:60px;
+		    left:0;
+		   
+		}
+		.jian li:nth-child(2){
+		    border-width:30px 0 30px 30px;
+		    border-color:transparent transparent transparent #58bc58;
+		    top:100px;
+		    left:780px;
+		}
+    </style>
+   
+</head>
+<body>
+    <div class="focus">
+        <ul>
+            <li><img src="../images/001.jpg"></li>
+            <li><img src="../images/002.jpg"></li>
+            <li><img src="../images/003.jpg"></li>
+        </ul>
+        <ul class="jian">
+            <li></li>
+            <li></li>
+        </ul>
+        
+    </div>
+
+     <script>
+    	var focus = document.querySelector(".focus");
+        var imgBox = focus.children[0];
+        //添加第一张图片到最后
+        var newLi = imgBox.children[0].cloneNode(true);
+        imgBox.appendChild(newLi);
+        imgBox.children[3].className = "li";
+        var firstImg = imgBox.children[0].children[0];
+        //左右键
+        var prev = document.querySelector(".jian")[0];
+        var next = document.querySelector(".jian")[1];
+        //图片总张数
+
+        var len = imgBox.children.length;
+        //等待第一张图片加载完成，得到focus和imgBox的width（若没有这一步，没办法得到数据，因为图片加载很慢）
+        firstImg.onload = function(){ 
+            focus.style.width = firstImg.offsetWidth + 'px';
+            imgBox.style.width = firstImg.offsetWidth * len + 'px';
+            console.log(imgBox.style.width )
+        }
+ 		// 实现滚动
+ 		var idx =0;
+ 		var timer = setInterval(function(){
+ 			autoPlay;
+ 		},1000)
+ 		//实现鼠标移入，停止滚动；鼠标移出，继续滚动
+ 		imgBox.onmouseenter = function(){
+ 			clearInterval(timer);
+ 		}
+ 		imgBox.onmouseout = function(){
+ 			 setInterval(function(){
+	 			autoPlay;
+	 		 },1000)
+ 		}
+ 		//自动播放
+ 		function autoPlay(){
+ 			idx++;
+ 			if(len == idx){
+ 				idx = 1;
+ 				imgBox.style.left = 0;
+ 			}
+ 			bufferAnimation(imgBox,{left:-firstImg.offsetWidth*idx},30)
+ 		}
+
+
+
+
+
+
+
+
+
+
+
+
+ 		//缓冲运动
+ 		 function bufferAnimation(ele,obj,timer,fn){
+	      	var count = 0;
+	      	for(var key in obj){
+	      		count ++;
+	      		var target = obj[key];
+	      		donghua(key,target)
+	      	}
+	      	function donghua(key,target){
+	      		target = key == "opacity"? target*100 : target;
+	      		console.log(target)
+		      	clearInterval(ele[key+'timer']);
+		      	ele[key+'timer'] = setInterval(function(){
+		      		var current = window.getComputedStyle(ele)[key];
+		      		
+		      		var unit =  current.match(/[a-z]+/);
+
+		      		unit =  unit? unit[0] : "";
+
+		      		current = parseFloat(current);
+		      		console.log(current);
+		      		var speed = (target - current)/10;
+		      		console.log(speed)
+		      		speed = speed > 0? Math.ceil(speed):Math.floor(speed);
+		      		current += speed;
+		      		console.log(current)
+		      		if(current == target){
+		      			clearInterval(ele[key+'timer'])
+		      		} 
+		      		current = key == "opacity"? current/100 : current;
+		      		ele.style[key] = current + unit;
+		      		if(count == 0 ){
+						typeof fn == "function"? fn() : fn;
+					}
+		      	},timer)
+	      	}
+	      }
+    </script>
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>弹幕效果</title>
+    <style>
+    .container{width:800px;margin:0 auto;padding-bottom:10px;background-color:#dfdfdf;}
+    #barrage{position:relative;height:520px;margin-bottom:10px;background-color:#000;overflow:hidden;}
+    #barrage .bar-item{position:absolute;left:100%;white-space:nowrap;}
+    #msg{margin-left:10px;width:400px;height:30px;border:1px solid #999;border-right:none;box-sizing:border-box;vertical-align:middle;}
+    #msg+button{padding:0 10px;height:30px;vertical-align:middle;}
+    </style>
+    
+</head>
+       
+          <!--   // 1.点击按钮，从文本框获取内容，生成弹幕
+            // 2.设置弹幕的位置、字体、颜色，发送到显示区域
+            // 3. 将弹幕移动
+            // 4. 移动到一定位置就移除
+
+
+
+            // 1.页面对象page（一个）
+            //  * 属性：显示框、输入框、按钮
+            //  * 方法：
+            //      初始化init：获取元素.当点击按钮时，获取文本框内容，创建一个弹幕实例。
+            // 2.弹幕对象Barrage（多个）
+            //  * 属性：颜色、字体大小、垂直方向位置、速度、内容
+            //  * 方法：
+            //         初始化init:生成一个span，类名为bar-item,添加各种样式，追加到显示区域
+            //         移动:调用动画移动到left为-自己宽度的大小。当动画结束时，调用移除函数
+            //         移除:让爸爸把我删掉
+            //      -->
+           
+</body>
+<body>
+    <div class="container">
+        <div id="barrage"></div>
+        <input type="text" id="msg">
+        <button>发送</button>
+    </div>
+    <!-- <script src="../common.js"></script> -->
+    <script type="text/javascript">
+        var page = {
+            visible:"#barrage",
+            msg:"#msg",
+            btn:"#msg+button",
+            init:function(){
+                this.barrage = document.querySelector(this.visible);
+                this.msg = document.querySelector(this.msg);
+
+                this.btn = document.querySelector(this.btn);
+                this.btn.onclick=()=>{
+                    console.log(7392)
+                     new Barrage(this.msg.value).init();
+                     
+                }
+            }
+        }
+        function Barrage(msg){
+            this.color = getRandomColor();
+            this.fontSize = getRandomNum(12,28);
+            this.top = getRandomNum(0,page.barrage.offsetHeight-this.fontSize);
+            this.timer = getRandomNum(30,300);
+            this.msg = msg;
+            console.log(this.msg)
+        }
+        Barrage.prototype.init = function(){
+            this.span = document.createElement("span");
+            this.span.innerText = this.msg;
+            console
+            this.span.classList.add("bar-item");
+            this.span.style.color = this.color;
+            this.span.style.fontSize = this.fontSize + 'px';
+            this.span.style.top = this.top + 'px';
+            page.barrage.appendChild(this.span);
+            this.move();
+            console.log(234);
+        }
+        Barrage.prototype.move = function(){
+            bufferAnimation(this.span,{left:-this.span.offsetWidth},this.timer,()=>{
+                this.span.parentElement.removeChild(this.span);
+            })
+            console.log(3628)
+        }
+        function getRandomColor(){
+            var r = getRandomNum(0,255);
+            var g = getRandomNum(0,255);
+            var b = getRandomNum(0,255);
+            return `rgb(${r},${g},${b})`
+        }
+         function getRandomNum(a,b){
+            return  parseInt(Math.random()*(b-a+1)+a);
+        }
+         //缓冲运动
+        function bufferAnimation(ele,obj,timer,fn){
+            var count = 0;
+            for(var key in obj){
+                count ++;
+                var target = obj[key];
+                donghua(key,target);
+            }
+            function donghua(key,target){
+                console.log(66)
+                console.log(target);
+                target = key == "opacity"? target *100 : target;
+                clearInterval(ele[key+"timer"]);
+                ele[key+"timer"] = setInterval(function(){
+                    var current = window.getComputedStyle(ele)[key];//120px
+                    var unit = current.match(/[a-z]+/);
+                    unit = unit? unit[0] : "";
+                    current = parseFloat(current); 
+                    current = key == "opacity"? current *100 : current;
+                    var speed = (target-current)/10;
+                    speed = speed>0? Math.ceil(speed) : Math.floor(speed);
+                    current += speed;
+                    if(current==target){
+                        clearInterval(ele[key+"timer"]);
+                        count--;
+                    }
+                    current = key == "opacity"? current/100 : current;
+                    ele.style[key] = current + unit;
+                    if(count == 0 ){
+                        typeof fn == "function"? fn() : fn;
+                    }
+                },timer)
+
+            }
+        }
+        page.init();
+    </script>
+ <!--    <script type="text/javascript">
+        var page = {
+             visible : "#barrage",
+             msg : "#msg",
+             btn : "#msg+button",
+             init : function(){
+                this.barrage =  document.querySelector(this.visible);
+                this.msg = document.querySelector(this.msg);
+                // console.log(this.msg)
+                this.btn = document.querySelector(this.btn);
+                this.btn.onclick = ()=>{
+                        new Barrage(this.msg.value).init();
+                    }
+             }
+
+        }
+        function Barrage(msg){
+                this.color = getRandomColor();
+                this.fontSize = getRandomNum(12,28);
+                this.top = getRandomNum(0,page.barrage.offsetHeight-this.fontSize);
+                this.timer = getRandomNum(30,200);
+                this.msg = msg;
+            }
+        Barrage.prototype.init = function(){
+            this.span = document.createElement("span");
+            this.span.innerHTML = this.msg;
+            this.span.classList.add("bar-item");
+            this.span.style.color =  this.color;
+            this.span.style.fontSize = this.fontSize + 'px';
+            this.span.style.top = this.top + 'px';
+            page.barrage.appendChild(this.span);
+            // console.log(this.span)
+            // console.log(888)
+            this.move();
+            console.log(this.top)
+            console.log(page.barrage.offsetHeight)
+        }
+        Barrage.prototype.move = function(){
+                bufferAnimation(this.span,{left:-this.span.offsetWidth},this.timer,() => {
+                    this.remove();
+                });
+                // console.log(77)
+            }
+        Barrage.prototype.move = function(){
+            bufferAnimation(this.span,{left:-this.span.offsetWidth},this.timer,() => {
+                this.remove();
+            });
+        }
+        Barrage.prototype.remove = function(){
+            this.span.parentElement.removeChild(this.span);
+        }
+        page.init();
+        function getRandomColor(){
+            var r = getRandomNum(0,255);
+            var g = getRandomNum(0,255);
+            var b = getRandomNum(0,255);
+            return `rgb(${r},${g},${b})`
+        }
+         function getRandomNum(a,b){
+            return  parseInt(Math.random()*(b-a+1)+a);
+        }
+         //缓冲运动
+        function bufferAnimation(ele,obj,timer,fn){
+            var count = 0;
+            for(var key in obj){
+                count ++;
+                var target = obj[key];
+                donghua(key,target);
+            }
+            function donghua(key,target){
+                // console.log(66)
+                // console.log(target);
+                target = key == "opacity"? target *100 : target;
+                clearInterval(ele[key+"timer"]);
+                ele[key+"timer"] = setInterval(function(){
+                    var current = window.getComputedStyle(ele)[key];//120px
+                    var unit = current.match(/[a-z]+/);
+                    unit = unit? unit[0] : "";
+                    current = parseFloat(current); 
+                    current = key == "opacity"? current *100 : current;
+                    var speed = (target-current)/10;
+                    speed = speed>0? Math.ceil(speed) : Math.floor(speed);
+                    current += speed;
+                    if(current==target){
+                        clearInterval(ele[key+"timer"]);
+                        count--;
+                    }
+                    current = key == "opacity"? current/100 : current;
+                    ele.style[key] = current + unit;
+                    if(count == 0 ){
+                        typeof fn == "function"? fn() : fn;
+                    }
+                },timer)
+
+            }
+        }
+    </script> -->
+</body>
+</html>

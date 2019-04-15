@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <style type="text/css">
+        *{margin:0;padding: 0;}
+        .zhuce{text-decoration: none;}
+        #chuang{
+            width:200px;
+            height:200px;
+            background-color:#ccc;
+            display:none;
+            position:absolute;
+            top:50%;
+            left:50%;
+            transform:translate(-50%, -50%);
+        }
+        .close{float:right;}
+    </style>
+</head>
+<body>
+    <h3>体验一把落地成盒吗，来吧 <span class="zhuce">gogogo!!!</span></h3>
+    <div id="chuang">
+        <h3>注册登录<span class="close">close</span></h3>
+        鸡名：<input type="text" /><br />
+        密码：<input type="text" /><br />
+        <input type="button" / value="提交">
+    </div>
+    <script type="text/javascript">
+        var zhuce = document.querySelector(".zhuce");
+        var chuang = document.querySelector("#chuang");
+        var close = document.querySelector(".close")
+        console.log(chuang)
+        var flag = true;
+        zhuce.onclick=function(){   
+            if (flag==true) {
+                chuang.style.display="block";
+                flag=!flag
+            }else if(flag==false) {
+                chuang.style.display="none";
+                flag=!flag
+            }
+
+        }
+        chuang.onmousedown = function(eve){
+            var ox = eve.pageX - chuang.offsetLeft;
+            var oy = eve.pageY - chuang.offsetTop;
+            document.onmousemove = function(e){
+                chuang.style.left = e.pageX - ox +"px";
+                chuang.style.top = e.pageY - oy +"px";
+            }
+            eve.preventDefault();
+        }
+        chuang.onmouseup = function(){
+            document.onmousemove = null;
+        }
+       chuang.onclick = function(){
+            chuang.style.left = Math.random()*(window.innerWidth-chuang.offsetWidth)+ 'px';
+            chuang.style.top = Math.random()*(window.innerHeight-chuang.offsetHeight)+ 'px';
+
+        }
+    </script>
+</body>
+</html>

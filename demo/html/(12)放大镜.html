@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <style type="text/css">
+        *{margin:0;padding:0;}
+        .smallbox,.bigbox{float:left;position:relative;}
+        .bigbox{width:300px;height:300px;overflow: hidden;/*display:none;*/background:yellow;}
+        .mask{width:100px;height:100px;background:rgba(0,0,0,.1);position:absolute;top:0;left:0;display:none;}
+        .smallbox img{display:block;width:300px;height: 300px;}
+        .bigbox img{display:none;width:900px;height: 900px;position:absolute;}
+    </style>
+</head>
+<body>
+    <div class="smallbox">
+        <img src="../images/che.jpg" alt="" />
+    </div>
+    <div class="bigbox">
+        <img src="../images/che.jpg" alt="" />
+    </div>
+    <script type="text/javascript">
+        var smallbox= document.querySelector(".smallbox");
+        var bigbox= document.querySelector(".bigbox");
+        var bigtu=document.querySelector(".bigbox img");
+        var mask = document.createElement("div");
+        mask.classList.add("mask");
+        smallbox.appendChild(mask);
+        console.log(smallbox.offsetLeft)
+        smallbox.onmouseenter = function(){
+            mask.style.display = "block";
+            bigbox.style.display = "block";
+            bigtu.style.display = "block";
+            var ox = mask.offsetWidth/2;
+            var oy = mask.offsetHeight/2;
+            var oox = bigtu.offsetWidth/2;
+            var ooy = bigtu.offsetHeight/2;
+            document.onmousemove = function(e){
+                mask.style.left = e.pageX - smallbox.offsetLeft -ox + "px";
+                mask.style.top = e.pageY - smallbox.offsetTop - oy + "px";
+                maxX = smallbox.offsetWidth -mask.offsetWidth;
+                maxY = smallbox.offsetHeight -mask.offsetHeight;
+                if(mask.offsetLeft<0){
+                    mask.style.left = 0;
+                }
+                if(mask.offsetTop<0){
+                    mask.style.top = 0;
+                }
+                if(mask.offsetLeft>maxX){
+                    mask.style.left = maxX + 'px';
+                }
+                if(mask.offsetTop>maxY){
+                    mask.style.top = maxY + 'px';
+                }
+                //放大比例
+                var biliX = (bigtu.offsetWidth-bigbox.offsetWidth)/(maxX);
+                var biliY = (bigtu.offsetHeight-bigbox.offsetHeight)/(maxY);
+                console.log(biliX);
+                bigtu.style.left = - mask.offsetLeft*biliX  + "px";
+                bigtu.style.top =  - mask.offsetTop*biliY  + "px";
+                console.log(bigtu.style.left)
+            }
+        }
+    </script>
+</body>
+</html

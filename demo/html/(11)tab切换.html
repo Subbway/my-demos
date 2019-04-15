@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+        ul{
+            list-style: none;
+            overflow: hidden;
+        }
+        .sport li{
+            padding: 0 34px;
+            float:left;
+            cursor:pointer;
+        }
+        .star li{
+            width: 300px;
+            height: 200px;
+            display: none;
+            background: #58bc58
+        }
+        .active{
+            background: #58bc58;
+        }
+    </style>
+</head>
+<body>
+    <ul class="sport">
+        <li>足球</li>
+        <li>篮球</li>
+        <li>台球</li>
+    </ul>
+    <ul class="star">
+        <li>梅西</li>
+        <li>科比</li>
+        <li>丁俊晖</li>
+    </ul>
+    <script>
+        var sport = document.querySelector(".sport");
+        var sportList= sport.children;
+        var star = document.querySelector(".star");
+        var starList = star.children;
+
+        for(var i=0;i<sportList.length;i++){
+            sportList[i].onclick=function(){
+                for(var j=0;j<sportList.length;j++){
+                    sportList[j].classList.remove("active");
+                    starList[j].style.display="none";
+                }
+                starList[this].style.display="block";
+                sportList[this].classList.add("active");
+            }.bind(i);
+        }
+    </script>
+</body>
+</html>
+   

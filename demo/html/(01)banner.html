@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>水平滚动轮播图</title>
+    <style>
+        ul{list-style: none;padding:0;margin:0;}
+        .focus img{display: block;}
+        .focus{position:relative;overflow:hidden;height: 320px;}
+        .focus ul{position:absolute;overflow:hidden;}
+        .focus ul li{float:left;}
+        .focus .page{position:absolute;right:0;bottom:0;padding:10px;}
+        .focus .page span{display:inline-block;margin:0 5px;width:30px;height:30px;line-height:30px;background-color:rgba(0,0,0,.6);text-align:center;color:#fff;border-radius: 50%;box-shadow:0 0 10px rgba(0,0,0,.5);}
+        .focus .page span.active{background-color: rgba(255,0,0,.8);}
+        .focus .jian{
+            width: 100%;
+            position:absolute;
+            top: 50%;
+            transform: translate(0,-50%);
+        }
+        .focus .jian img{width: 100px;}
+        .focus .jian .prev{float: left;}
+        .focus .jian .next{float: right;transform: rotateY(180deg);}
+    </style>
+    
+   
+</head>
+<body>
+    <div class="focus">
+        <ul>
+            <li><img src="../images/001.jpg"></li>
+            <li><img src="../images/002.jpg"></li>
+            <li><img src="../images/003.jpg"></li>
+        </ul>
+        <div class="jian">
+            <img src="../images/s.png" class="prev">
+            <img src="../images/s.png" class="next">
+        </div>
+        
+    </div><!-- 
+    <script src="../../../common.js"></script> -->
+    <script type="text/javascript">
+        var focus = document.querySelector(".focus");
+        var imgBox = focus.children[0];
+        var prev = document.querySelectorAll(".jian img")[0];
+        var next = document.querySelectorAll(".jian img")[1];
+
+        //向imgBox添加第一个子元素到最后
+        var newLi = imgBox.children[0].cloneNode(true);
+        imgBox.appendChild(newLi);
+        // console.log(imgBox);
+        //定义imgBox和focus的宽
+        var firstImg = imgBox.children[0].children[0];
+        var len = imgBox.children.length;
+        firstImg.onload = function(){
+            imgBox.style.width = firstImg.offsetWidth*len + "px";
+            focus.style.width = firstImg.offsetWidth + "px";
+            console.log(imgBox.style.width)
+        }
+        //自动轮播
+        var idx = 0;
+        var timer = setInterval(autoPlay,2000)
+        //鼠标移入移出
+        focus.onmouseenter = function(){
+            clearInterval(timer);
+        }
+        focus.onmouseleave = function(){
+            timer = setInterval(autoPlay,2000);
+        }
+        //左右按键功能
+        prev.onclick = function(){
+            idx--;
+            showPicture();
+            console.log(666)
+        }
+        next.onclick = function(){
+            autoPlay();
+            console.log(777)
+        }
+        //小圆点跟随
+        creatDots();
+        var page = document.querySelector(".page")
+
+        //点击小圆点，得到相应的图片
+        //
+        //方法一
+        // for(var i=0;i<len-1;i++){ 
+        //    page.children[i].i = i;
+        //    page.children[i].onclick = function(){
+        //         idx = this.i;
+        //         console.log(idx);
+        //         showPicture();
+        //    }
+        // }
+        //方法二：事件委托
+        page.onclick=function(e){
+            if(e.target.tagame == "SPAN"){
+                idx = e.target.innerText - 1;
+                showPicture()
+            }
+
+        }
+        
+        //自动播放
+        function autoPlay(){
+            idx++;
+            showPicture();
+        }
+        //换图
+        function showPicture(){
+            if(idx == len){
+                imgBox.style.left = 0
+                idx = 1;
+            }
+            if(idx == -1){
+                imgBox.style.left = -firstImg.offsetWidth*(len-1) +'px';
+                idx = 2;
+            }
+            for(var i=0;i<len-1;i++){
+                page.children[i].classList.remove("active");
+            }
+            if(idx==len-1){
+               page.children[0].classList.add("active"); 
+            }else{
+                page.children[idx].classList.add("active"); 
+            }
+          
+            bufferAnimation(imgBox,{left:-firstImg.offsetWidth*idx},30);
+        }
+         //创建小圆点
+        function creatDots(){
+            var page = document.createElement("div");
+            page.classList.add("page")
+            for(var i=1;i<len;i++){
+                var span = document.createElement("span");
+                page.appendChild(span);
+                span.innerText = i;
+
+            }
+            focus.appendChild(page);
+            
+            page.children[0].classList.add("active");//不能用span，因为span是最后一个span//
+            // console.log(page)
+        }
+        //缓冲运动
+        function bufferAnimation(ele,obj,timer,fn){
+            var count = 0;
+            for(var key in obj){
+                count ++;
+                var target = obj[key];
+                donghua(key,target);
+            }
+            function donghua(key,target){
+                console.log(66)
+                console.log(target);
+                target = key == "opacity"? target *100 : target;
+                clearInterval(ele[key+"timer"]);
+                ele[key+"timer"] = setInterval(function(){
+                    var current = window.getComputedStyle(ele)[key];//120px
+                    var unit = current.match(/[a-z]+/);
+                    unit = unit? unit[0] : "";
+                    current = parseFloat(current); 
+                    current = key == "opacity"? current *100 : current;
+                    var speed = (target-current)/10;
+                    speed = speed>0? Math.ceil(speed) : Math.floor(speed);
+                    current += speed;
+                    if(current==target){
+                        clearInterval(ele[key+"timer"]);
+                        count--;
+                    }
+                    current = key == "opacity"? current/100 : current;
+                    ele.style[key] = current + unit;
+                    if(count == 0 ){
+                        typeof fn == "function"? fn() : fn;
+                    }
+                },timer)
+
+            }
+        }
+    </script>
+</body>
+</html>

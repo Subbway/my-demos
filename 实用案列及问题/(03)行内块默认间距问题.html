@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<!-- 
+	行内块间距问题：	
+	1.将所有的行内块元素直接设置浮动，个人认为最直接的方法，当然是在适当的场景中，因为过度的浮动会产生需要清除浮动的必要。
+	2.在产生边距的行内块的父元素设置属性：font-size：0px;
+	3.在父元素上设置，word-spacing(词边距)的值设为合适的负值即可
+	4.在html中将行内块元素在同一行显示，不要进行美观缩进或者换行
+  -->
+
+
+
+  	<!--
+	input框和文字对齐问题：
+  	1.以vertical-align:text-bottom为基础的
+	css代码如下：vertical-align:text-bottom; margin-bottom:2px; *margin-bottom:-2px;
+	css代码如下：vertical-align:text-bottom; margin-bottom:2px; margin-bottom:-2px\9;
+
+	2.以vertical-align:text-top为基础的
+	css代码如下：height:13px; vertical-align:text-top; margin-top；
+
+	3.以vertical-align:bottom为基础的
+	css代码如下：height:15px; vertical-align:bottom; margin-bottom:3px; margin-top:-1px;
+
+	4.以vertical-align:top为基础的
+	css代码如下：height:14px; vertical-align:top;
+
+	5.以vertical-align:middle为基础的
+	css代码如下：vertical-align:middle; margin-top:-2px; margin-bottom:1px;
+  -->
+</body>
+</html>

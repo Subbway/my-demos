@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		body {
+			height: 3000px;
+			/* overflow: hidden; */
+		}
+		.product {
+			/* border: 1px solid #000; */
+			margin-left: 200px;
+			margin-top: 400px;
+		}
+		.product button {
+			padding: 10px;
+			cursor: pointer;
+		}
+		.product span {
+			/*display: none;*/
+			position: absolute;
+		}
+		.cart {
+			position: absolute;
+			left: 800px;
+			top: 200px;
+			border: solid 1px #ccc;
+			padding: 10px;
+			
+	</style>
+</head>
+<body>
+	<div class="product">
+		<button>A</button>
+	<!-- 	<span>图片</span> -->
+	</div>
+	<div class="cart">B</div>
+	
+	<script>
+		//抛物线运动
+		var btn = document.querySelectorAll(".product button")[0];
+		// var img = document.querySelectorAll(".product span")[0];
+		var cart = document.querySelectorAll(".cart")[0];
+
+		// console.log(img)
+		//计算某数的平方值并返回
+		function t(a){
+			return Math.pow(a,2)
+		}
+		//获取cart初始位置
+			var	x1 = cart.offsetLeft;
+			var y1 = cart.offsetTop;
+			
+		//点击事件
+		btn.onclick = function(e){
+			
+			// console.log(x1,x2);
+			//img初始位置
+			e = e || event;
+			// 
+			var x2 = e.clientX;
+			var y2 = e.clientY;
+			//计算最高点
+			var x3 =  x2+(x1-x2)/2;
+			var y3 =  100;		
+			//小图显示
+			var img = document.createElement('span');
+			document.body.appendChild(img);
+			img.innerHTML = '图片';
+			img.style.position = 'absolute';
+			img.style.left = x2 + 'px';
+			img.style.top = y2 + 'px';
+
+			//抛物线a,b,c的值
+			// var a = ((x1 - x2)*(y3-y1)-(x3-x1)*(y1-y3))/((x1-x2)*(x2-x3)*(x3-x1));
+			// var b =y1-y2-a*(t(x1)-t(x2))/(x1-x2);
+			// var c =y1-a*t(x1)-b*x3-x1;
+			var fenzi = (t(x2)-t(x3))*(y1-y2) - (t(x1)-t(x2))*(y2-y3);
+			var fenmu = (t(x2)-t(x3))*(x1-x2) - (t(x1)-t(x2))*(x2-x3);
+			var b = fenzi/fenmu;
+			var a = (y1-y2-b*(x1-x2))/(t(x1)-t(x2));
+			var c = y1 - a*t(x1)-b*x1;
+			console.log(a, b, c);
+			//开启定时器	
+
+			timer = setInterval(function(){	
+				
+				x2 += 10;
+				var y = a*t(x2) + b*x2 + c;
+				img.style.left = x2 + 'px';
+				img.style.top = y + 'px';
+				// console.log(img.style.left)
+				// console.log(img.style.top)
+				if(x2 >= x1){
+					clearInterval(timer);
+					document.body.removeChild(img);
+					console.log(x1,x2);
+				}
+			},10)
+
+		}
+	</script>
+</body>
+</html>

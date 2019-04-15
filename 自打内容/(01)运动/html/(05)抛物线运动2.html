@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <style type="text/css">
+            *{margin: 0;padding: 0;}
+            #sc,.rg2,#sc2 {
+                position: absolute;
+                top: 400px;
+                left: 0;
+            }
+            #sc2{
+                left: 1000px;
+            }
+            /*div{
+                width: 50px;
+                height: 50px;
+                position: absolute;
+                top: 616px;
+                left:0;
+                background: red;
+            }*/
+        </style>
+        <script type="text/javascript">
+            //抛物线运动
+            document.addEventListener("DOMContentLoaded",function(){
+                var rg2 = document.getElementsByClassName("rg2")[0];
+                var sc2 = document.getElementById("sc2");
+                console.log(window.innerHeight);
+                //1.1初始化速度变量（水平、垂直）
+               
+                // var speedY = 4;
+                //计算某数的平方值并返回
+                function t(a){
+                    return Math.pow(a,2)
+                }
+                //1.2获取sc2的初始位置
+                var x1 = sc2.offsetLeft;
+                var y1 = sc2.offsetTop;
+             
+                //1.3获取当前值(水平、垂直)
+                var x2 = rg2.offsetLeft;
+                var y2 = rg2.offsetTop;
+                console.log(x2)
+                console.log(y2)
+                //1.4计算中点
+                var x3 =  x2+(x1-x2)/2;
+                var y3 =  100;
+               
+                //抛物线a,b,c的值
+                var fenzi = (t(x2)-t(x3))*(y1-y2) - (t(x1)-t(x2))*(y2-y3);
+                var fenmu = (t(x2)-t(x3))*(x1-x2) - (t(x1)-t(x2))*(x2-x3);
+                var b = fenzi/fenmu;
+                var a = (y1-y2-b*(x1-x2))/(t(x1)-t(x2));
+                var c = y1 - a*t(x1)-b*x1;
+               
+                // 2.开启定时器
+                var timer = setInterval(function(){
+                   
+                    var speedX = (1000-rg2.offsetLeft)/10;
+                    speedX = Math.ceil(speedX);
+                    //当改变后的值大于等于目标值，清除定时器，同时将改变后的值改成目标值。
+                    var x2 = rg2.offsetLeft;
+                    x2 += speedX;
+                    var y = a*t(x2) + b*x2 + c; 
+                    
+                    if (speedX == 0) {
+                         x2 -= speedX;
+                         console.log(666)
+                    }
+                    //将改变后的值赋值给元素的样式  
+                    rg2.style.left = x2 + 'px';
+
+                    rg2.style.top = y + 'px';
+                    console.log(rg2.style.left);
+                    console.log(rg2.style.top);
+                },10)
+
+               
+            })
+        </script>
+    </head>
+    <body>
+        <img src="../images/s.png" id="sc"/>
+        <img src="../images/rg2.png"  class="rg2"/>
+        <img src="../images/s.png" id="sc2"/>
+
+        <div></div>
+    <!-- 1000-50=950-25=925-0=925-（-25）=950 -->
+    </body>
+</html>

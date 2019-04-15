@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		body, ul, li, ol {
+		    list-style: none;
+		    padding: 10px;
+		    margin: 20px;
+		    font-size: 12px;
+		    font-family: 微软雅黑;
+		}
+		img {
+		    border: 0px;
+		}
+		.picList {
+		    width: 100%;
+		    float: left;
+		}
+		.picList .col {
+		    width: 300px;
+		    height: 200px;
+		    position: relative;
+		    overflow: hidden;
+		    float: left;
+		    margin: 10px 0 0 10px;
+		}
+		.picList .col img, .col a {
+		    position: absolute;
+		    top: 0;
+		    left: 10px;
+		}
+		.picList .col img {
+		    width: 100%;
+		}
+		.picList .col a {
+		    display: block;
+		    width: 280px;
+		    height: 180px;
+		    top: 160px;
+		    background:#000;
+		    color: white;
+		    font-style: normal;
+		    line-height: 25px;
+		    padding: 10px;
+		    opacity: 0.8;
+		    text-decoration: none;
+		}
+	</style>
+</head>
+<body>
+	<div class="picList">
+	    <div class="col" > 
+	       <img src="../images/b1.jpg" />
+	       <a href="#">学会html5 <br/>
+	     本课程由浅入深，逐步推进，以示例为主线，详细完整地介绍HTML5的新功能与新特征
+	       </a> 
+	    </div>
+	    <div class="col"> 
+	       <img src="../images/b2.jpg" />
+	       <a href="#">圆角水晶按钮制作<br/>
+	    网页中的圆角按钮和宽度自适应按钮就这么轻松制作！
+	       </a> 
+	    </div>
+	    <div class="col"> 
+	       <img src="../images/b3.jpg" />
+	       <a href="#">导航条菜单的制作<br/>
+	    30分钟教你轻松制作出各种形式的网站导航条菜单
+	       </a> 
+	    </div>
+    </div>
+    <script>
+    	// 缓冲运动
+	    //   速度跟当前值与目标值有关
+	    // 开启定时器
+            // （1）获取当前值，赋给变量
+            // （2）动态计算速度
+            // （3）对变量进行更新
+            //  * 在赋值样式之前进行边界处理：清除定时器
+            // （4）将变量的更新后的值赋给样式
+	      var picList = document.querySelectorAll(".picList")[0];
+	      var cols = picList.children;
+	      for(var i=0;i<cols.length;i++){
+	      	cols[i].idx = i;
+	      	cols[i].onmouseenter = function(){
+	      			// console.log(this.idx);
+	      			bufferAnimation(this.children[1],{top: 0},30)
+	      		// 	//1进去定时器之前先清除定时器//
+	      		// 	clearInterval(this.timer);
+	      		// 	//2开启定时器
+	      		// 	this.timer = setInterval(function(){
+	      		// 	//2.1获取当前值，赋给变量	
+	      		// 	var x = this.children[1].offsetTop;
+	      		// 	//2.2动态计算速度，speed是目标值减去初始值
+	      		// 	var speed = Math.floor((0- x)/10);
+	      		// 	console.log(x)
+	      		// 	//2.3*在赋值样式之前进行边界处理：清除定时器
+	      		// 	 		//变量更新
+	      		// 	x += speed;
+	      		// 	if(x == 0){
+	      		// 		clearInterval(this.timer);
+	      		// 	}
+	      			
+	      		// 	//3将变量的更新后的值赋给样式
+	      		// 	this.children[1].style.top = x +"px";
+	      		// }.bind(this),30)
+	      	}
+	      	cols[i].onmouseleave = function(){
+	      			// console.log(this.idx);
+	      		bufferAnimation(this.children[1],{top: 160},30)	
+	      		// 	//进去定时器之前先清除定时器//
+
+	      		// 	clearInterval(this.timer);
+	      		// 	this.timer = setInterval(function(){
+	      		// 	var x = this.children[1].offsetTop;
+	      		// 	//speed是目标值减去初始值
+	      		// 	var speed = Math.ceil((160 - x)/10);
+	      		// 	// console.log(x)
+	      		// 	x += speed;
+	      		// 	if(x ==160){
+	      		// 		clearInterval(this.timer);
+	      		// 	}
+	      			
+	      		// 	this.children[1].style.top = x +"px";
+	      		// }.bind(this),80)
+	      	}
+	      }
+	      //缓冲运动的封装
+	      //基础版
+	      // function bufferAnimation(ele,key,target,timer){
+	      // 	target = key == "opacity"? target*100 : target;
+
+	      // 	clearInterval(ele[key+'timer']);
+	      // 	ele[key+'timer'] = setInterval(function(){
+	      // 		var current = window.getComputedStyle(ele)[key];
+	      		
+	      // 		var unit =  current.match(/[a-z]+/);
+
+	      // 		unit =  unit? unit[0] : "";
+
+	      // 		current = parseFloat(current);
+	      // 		console.log(current);
+	      // 		var speed = (target - current)/10;
+	      // 		console.log(speed)
+	      // 		speed = speed? Math.ceil(speed):Math.floor(speed);
+	      // 		current += speed;
+	      // 		console.log(current)
+	      // 		if(current == target){
+	      // 			clearInterval(ele[key+'timer'])
+	      // 		} 
+	      // 		current = key == "opacity"? current/100 : current;
+	      // 		ele.style[key] = current + unit;
+	      // 	},timer)
+	      // }
+	      	 //进阶版
+	      function bufferAnimation(ele,obj,timer,fn){
+	      	var count = 0;
+	      	for(var key in obj){
+	      		count ++;
+	      		var target = obj[key];
+	      		donghua(key,target)
+	      	}
+	      	function donghua(key,target){
+	      		target = key == "opacity"? target*100 : target;
+	      		console.log(target)
+		      	clearInterval(ele[key+'timer']);
+		      	ele[key+'timer'] = setInterval(function(){
+		      		var current = window.getComputedStyle(ele)[key];
+		      		
+		      		var unit =  current.match(/[a-z]+/);
+
+		      		unit =  unit? unit[0] : "";
+
+		      		current = parseFloat(current);
+		      		console.log(current);
+		      		var speed = (target - current)/10;
+		      		console.log(speed)
+		      		speed = speed > 0? Math.ceil(speed):Math.floor(speed);
+		      		current += speed;
+		      		console.log(current)
+		      		if(current == target){
+		      			clearInterval(ele[key+'timer'])
+		      		} 
+		      		current = key == "opacity"? current/100 : current;
+		      		ele.style[key] = current + unit;
+		      		if(count == 0 ){
+						typeof fn == "function"? fn() : fn;
+					}
+		      	},timer)
+	      	}
+	      }
+    </script>
+</body>
+</html>

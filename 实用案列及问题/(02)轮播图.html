@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		*{margin: 0;padding:0;}
+		li{list-style: none;position: absolute;}
+		#banner{
+			width: 100%;
+			height: 300px;
+			position: relative;
+		}
+		.picture>li{
+			width: 100%;
+			height:300px;
+			text-align: center;
+			font-size: 30px;
+			top: 0;
+			left:0;
+		}
+		.picture li:nth-child(1){background: red;}
+		.picture li:nth-child(2){background: pink;}
+		.picture li:nth-child(3){background: tomato;}
+		.picture li:nth-child(4){background: #58bc58;}
+		.circle>li{
+			width: 20px;
+			height:20px;
+			border-radius: 50%;
+			background: #000;
+		}
+		.circle li:nth-child(4){right:40px;bottom:30px;}
+		.circle li:nth-child(3){right:80px;bottom:30px;}
+		.circle li:nth-child(2){right:120px;bottom:30px;}
+		.circle li:nth-child(1){right:160px;bottom:30px;}
+		.btn li:nth-child(1){
+			width: 0;
+			height: 0;
+			border-width:30px 30px 30px 0;
+		    border-style:solid;
+		    border-color:transparent #fff transparent transparent;
+		    margin:40px auto;
+		    top:60px;
+		    left:0;
+		    opacity: 0.5;
+		}
+		.btn li:nth-child(2){
+			width:0;
+		    height:0;
+		    border-width:30px 0 30px 30px;
+		    border-style:solid;
+		    border-color:transparent transparent transparent #fff;
+		    top:100px;
+		    right:0;
+		    opacity: 0.5;
+		}
+		.active{background-color:0;}
+	</style>
+</head>
+<body>
+	<div id="banner">
+		<ul class="picture">
+			<li>1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+		</ul>
+		<ul class="circle">
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+		<ul class="btn">
+			<li></li>
+			<li></li>
+		</ul>
+	</div>
+	<script>
+		var banner = document.querySelector("#banner");
+		var picture = document.querySelectorAll(".picture")[0];
+		var circle = document.querySelectorAll(".circle")[0];
+		var btn = document.querySelectorAll(".btn")[0];
+		console.log(btn)
+		var imgArr = picture.children;
+		var yuan = circle.children;
+		var turn_left = btn.children[0];
+		var turn_right = btn.children[1];
+		console.log(turn_right);
+		var currentIndex = 0;
+		//动画轮播
+		function animate(currentIndex){
+			for(var i=0;i<imgArr.length;i++){
+				imgArr[i].style.opacity = 0;
+				imgArr[i].style.zindex = 0;
+				yuan[i].style.background = "#000";
+			}
+			imgArr[currentIndex].style.opacity = 1;
+			imgArr[currentIndex].style.zindex = 1;
+			yuan[currentIndex].style.background = "#fff";
+		}
+		function autoplay(){
+			currentIndex++;
+            if(currentIndex == imgArr.length){
+                currentIndex = 0;
+            }
+            animate(currentIndex);
+		}
+		//自动播放;
+		animate(currentIndex);
+		timer = setInterval(autoplay,2000);
+		//onmouseenter时，停止播放
+		banner.onmouseenter = function(){
+			console.log(1);
+       		clearInterval(timer);
+    	}
+    	//onmouseleave时，重新播放
+
+    	banner.onmouseleave = function(){
+    		timer = setInterval(autoplay,2000);
+    	}
+    	//点击向右，下一张;
+    	turn_right.onclick = function(){
+    		autoplay();
+    	}
+    	//点击向左，上一张;
+    	turn_left.onclick = function(){
+    		currentIndex--;
+            if(currentIndex == -1){
+                currentIndex = imgArr.length-1;
+            }
+            animate(currentIndex);
+    	}
+    	//点击圆点，匹配对应图片;
+    	 for (let i = 0; i < yuan.length; i++) {
+	        yuan[i].onclick = function() {
+	            currentIndex = i;
+	            animate(i);
+	        }
+	    }
+	</script>
+</body>
+</html>

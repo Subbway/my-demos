@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <style type="text/css">
+        *{margin:0;padding:0;}
+        #box{background:red;}
+        .kuang{width:398px;height: 200px;border:1px solid #b8bc58;overflow-y:auto;}
+        .msg{width:400px;}
+        .btn{width:50px;background: #ccc;}
+        li{list-style: none;display:inlin-block;color:#58bc58;}
+        .last{width:400px;height:40px;}
+        .fr{float:right;}
+        .one{width:30px;height:20px;}
+        .two{width:30px;height:20px;}
+    </style>
+</head>
+<body>
+    <div id="box">
+        <ul class="kuang">
+            
+        </ul>
+        <input type="text" class ="msg"/ ><br />
+        
+        <div class="last">
+            <input type="button" class ="btn" value="提交" />
+            <span class= "fr two"></span>
+            <span class = "fr one"></span>
+            
+        </div>
+        
+    </div>
+    <script type="text/javascript">
+        var kuang = document.querySelector(".kuang");
+        var msg = document.querySelector(".msg");
+        var btn = document.querySelector(".btn");
+        var arr = [];
+        var newsArr = ['小明由于调戏女老师再次被滚粗教室','iPhone18发布,屏幕高度亮瞎了所有小伙伴','为了弘扬乐于助人的精神，中国人大开会决定授予老王“中国好邻居”称号'];
+        for(var i=0;i<newsArr.length;i++){
+            var span1 = document.createElement("span");
+            var span2=document.createElement("span");
+            span1.innerText = newsArr[i];
+            var li = document.createElement("li");
+            li.appendChild(span1);
+            kuang.appendChild(li);
+            arr.push(li);
+        }
+        
+        btn.onclick = function(){
+            var span1 = document.createElement("span");
+            var span2=document.createElement("span");
+            span1.innerText = msg.value;
+            var li = document.createElement("li");
+            li.appendChild(span1);
+            kuang.appendChild(li);
+            arr.push(li);
+            console.log(arr.length)
+            if(arr.length>5){
+                kuang.removeChild(arr[0])
+                console.log(55)
+                arr.shift()
+
+            }
+
+        }
+        var filterWords="傻逼,SB,尼玛,妈的,操你妈,狗日的,bitch,fuck,混蛋";
+        var filterArr=filterWords.split(",");
+            for(var i=0;i<filterArr.length;i++){
+                var reg=new RegExp(filterArr[i],"gi");
+                msg.value=msg.value.replace(reg,"good");
+            }
+    </script>
+</body>
+</html>

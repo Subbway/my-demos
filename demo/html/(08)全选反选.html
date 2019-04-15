@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+</head>
+<body>
+    <table id="dataList">
+        <caption>爱好</caption>
+        <thead>
+            <th><input type="checkbox" class="all" id="all">全选</th>
+            <th><input type="checkbox" class="fx" id="fx">反选</th>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="checkbox" name="hobby"></td>
+                <td>篮球</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" name="hobby"></td>
+                <td>足球</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" name="hobby"></td>
+                <td>羽毛球</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" name="hobby"></td>
+                <td>爬山</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" name="hobby"></td>
+                <td>游泳</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" name="hobby"></td>
+                <td>购物</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" name="hobby"></td>
+                <td>看电影</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" name="hobby"></td>
+                <td>旅游</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" name="hobby"></td>
+                <td>音乐</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" name="hobby"></td>
+                <td>画画</td>
+            </tr>
+        </tbody>
+    </table>
+    <script type="text/javascript">
+        var all = document.querySelector(".all");
+        var fx = document.querySelector(".fx"); 
+        var hobby = document.getElementsByName("hobby");
+        //全选，全不选
+        all.onclick = function(){
+                for(var i = 0;i<hobby.length;i++){
+                hobby[i].checked = all.checked;
+            }
+        }
+        //反选
+        fx.onclick = function(){
+            for(var i = 0;i<hobby.length;i++){
+                hobby[i].checked = !hobby[i].checked;
+            }
+            all.checked = isAllChecked()
+        }
+        //hobby全选时，all被checked
+        function isAllChecked(){
+            var res = true;
+            for(var i= 0;i<hobby.length;i++){
+                
+                if(hobby[i].checked == false){
+                    res = false;
+                    break;
+                }
+            }
+            return res
+        }
+        for(var i=0;i<hobby.length;i++){
+            hobby[i].onclick=function(){
+                all.checked = isAllChecked();
+            }
+        }
+        
+        
+
+
+
+    </script>
+</body>
+</html>

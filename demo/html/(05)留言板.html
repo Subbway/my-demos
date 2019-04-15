@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <style type="text/css">
+        *{margin:0;padding:0;}
+        #box{background:red;}
+        .kuang{width:398px;height: 200px;border:1px solid #b8bc58;overflow-y:auto;}
+        .msg{width:400px;}
+        .btn{width:50px;background: #ccc;}
+        li{list-style: none;width:100%;color:#58bc58;}
+        .last{width:400px;height:40px;}
+        .fr{float:right;}
+        .one{width:30px;height:20px;}
+        .two{width:30px;height:20px;}
+    </style>
+</head>
+<body>
+    <div id="box">
+        <ul class="kuang">
+            
+        </ul>
+        <input type="text" class ="msg"/ ><br />
+        
+        <div class="last">
+            <input type="button" class ="btn" value="提交" />
+            <span class= "fr two"></span>
+            <span class = "fr one"></span>
+            
+        </div>
+        
+    </div>
+    <script type="text/javascript">
+        var kuang = document.querySelector(".kuang");
+        var msg = document.querySelector(".msg");
+        var btn = document.querySelector(".btn");
+        var one = document.querySelector(".one");
+        var two = document.querySelector(".two");
+        
+
+        //点击提交按钮发送消息
+        btn.onclick=function(){
+            send();
+        }
+        document.onkeydown = function(e){
+            if(e.ctrlKey&&e.which==13){
+                send();
+            }
+        }
+        msg.oninput = function(){
+            var _msg = msg.value;
+            if(_msg.length>=20){
+                console.log(678)
+                msg.value=msg.value.substr(0,20);
+
+                
+            }
+            ziShu();
+        }
+        function send(){
+            if(msg.value.length != 0){
+                var span1 = document.createElement("span");
+                var span2 = document.createElement("span");
+                var li = document.createElement("li");
+                span1.innerText = msg.value;
+                li.appendChild(span1);
+                span2.innerText =Timer();
+                span2.classList.add("fr")
+                li.appendChild(span2);
+                kuang.appendChild(li);
+                msg.value = "";
+                msg.focus();
+                one.innerHTML = 0;
+            }
+            
+        }
+        //实时显示可输入字数
+        function ziShu(){
+            
+            
+            two.innerHTML = "/"+20;
+            one.innerText = msg.value.length;
+        }
+        function Timer(){
+            var d = new Date();
+            var year = d.getFullYear();
+            var month = blink(d.getMonth()+1);
+            var date = blink(d.getDate());
+            var hour = blink(d.getHours());
+            var min = blink(d.getMinutes());
+            var second = blink(d.getSeconds()); 
+            return `${year}-${month}-${date} ${hour}:${min}:${second}`
+            //补零
+            function blink(num){
+                return num>=10?num:"0"+num
+            }
+        }
+
+    </script>
+</body>
+</html>

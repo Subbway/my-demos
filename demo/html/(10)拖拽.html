@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <style type="text/css">
+        *{margin:0;padding:0;}
+        #box{
+            width:300px;
+            height:200px;
+            background:#CCC;
+            position:absolute;
+        }
+        #box h2{line-height: 30px;background:yellow ;font-size: 20px;text-align: right;}
+        a{text-decoration: none;}
+    </style>
+</head>
+<body>
+    <div id="box">
+         <h2>走吧走吧，不要想家<a href="#">回去吧，顺着原路回家</a></h2>
+        <p>Drag:<span>false</span></p>
+        <p>x:<span>0</span></p>
+        <p>y:<span>0</span></p>
+    </div>
+    <script type="text/javascript">
+        var box = document.querySelector("#box");
+        var h2 = document.querySelector("h2");
+        var drag = document.querySelector("#box p:nth-child(2) span")
+        var x = document.querySelector("#box p:nth-child(3) span");
+        var y = document.querySelector("#box p:nth-child(4) span");
+        var fh = h2.children[0];
+        var d = new Date("2019-12-30 0:00:00");
+        var arr = [];
+        h2.onmousedown = function(eve){
+            drag.innerHTML = "true";
+            var ox =  eve.pageX - box.offsetLeft;
+            var oy =  eve.pageY - box.offsetTop;
+            console.log(ox);
+            x.innerHTML = eve.pageX;
+            y.innerHTML = eve.pageY;
+            
+            var obj = {};
+            obj.x =  box.offsetLeft;
+            obj.y = box.offsetTop;
+            arr.unshift(obj);
+            document.onmousemove = function(e){
+                box.style.left = e.clientX - ox + "px";
+                box.style.top = e.clientY - oy + "px";
+                var obj = {};
+                obj.x=e.clientX - ox;
+                obj.y=e.clientY - oy;
+                arr.unshift(obj);
+                x.innerHTML = e.pageX;
+                y.innerHTML = e.pageY;
+                e.preventDefault();
+            }
+            console.log(arr);
+        }
+        h2.onmouseup = function(){
+            document.onmousemove = null;
+            document.cookie = "left="+box.offsetLeft+"; expires="+d.toUTCString();
+            document.cookie = "top="+box.offsetTop+"; expires="+d.toUTCString();
+            console.log(document.cookie)
+        }
+        fh.onclick = function(){
+            var i=0;
+            var timer = setInterval(function(){ 
+                console.log(i);
+                box.style.left = arr[i].x  + "px";
+                box.style.top = arr[i].y + "px";
+                x.innerHTML = arr[i].x;
+                y.innerHTML = arr[i].y;  
+                if(i>=arr.length-1){
+                    clearInterval(timer)
+                    arr=[];
+                }
+                i++;
+            },30)
+        }
+        //cookie
+        var arr = document.cookie.split("; ");
+        arr.forEach(function(item){
+            var res = item.split("=");
+            if(res[0] == "left" || res[0] == "top"){
+                box.style[res[0]] = res[1]+"px";
+            }
+
+        })
+
+    </script>
+</body>
+</html>

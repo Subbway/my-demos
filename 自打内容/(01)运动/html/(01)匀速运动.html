@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		*{margin:0;padding:0}
+		html{overflow:hidden;}
+		#box{width:100px;height:100px;position: absolute;
+			left:0;}
+		img{width: 100px;height: 100px;}
+	</style>
+	
+</head>
+<body>
+	
+	<div id="box">
+		<img src="../images/bird.gif" alt="">
+	</div>
+	<script>
+		//匀速运动
+		var box = document.querySelector("#box");
+
+		//未赋值给box.style.left等等,box.style.left是空字符串
+		// box.style.left=box.offsetLeft;
+		// console.log(box.style.left);
+		// console.log(box.style.width);
+
+		var speed = 3;//1.定义一个速度
+		// 2.开启定时器
+		var timer = setInterval(function(){
+			//2.1获取当前值，赋值给变量(box每一次的位置)
+			var x = box.offsetLeft;
+			//2.2对变量进行更新
+			x += speed;
+			//*在赋值样式之前进行边界处理:清除定时器、变量更新
+			if(x >= window.innerWidth){
+				x = window.innerWidth;
+				clearInterval(timer);
+			}	
+			//(若是不想飞出页面，则 x = window.innerWidth - box.offsetWidth)	
+			//2.3将变量更新后的值赋给样式
+			box.style.left = x + "px";
+			console.log(box.style.left)
+		},30)
+		console.log(window.innerWidth)
+	</script>
+</body>
+</html>
